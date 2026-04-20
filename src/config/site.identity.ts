@@ -1,10 +1,10 @@
 export const siteIdentity = {
   code: process.env.NEXT_PUBLIC_SITE_CODE || 'vhprfoaudu',
   name: process.env.NEXT_PUBLIC_SITE_NAME || 'Jiyinaicha',
-  tagline: process.env.NEXT_PUBLIC_SITE_TAGLINE || 'Classified platform',
+  tagline: process.env.NEXT_PUBLIC_SITE_TAGLINE || 'Local classifieds marketplace',
   description:
     process.env.NEXT_PUBLIC_SITE_DESCRIPTION ||
-    'A classified site for Jiyinaicha, built for clean discovery and structured publishing.',
+    'Buy and sell locally on Jiyinaicha—fast classifieds with clear categories and honest listings.',
   domain: process.env.NEXT_PUBLIC_SITE_DOMAIN || 'jiyinaicha.com',
   url: process.env.NEXT_PUBLIC_SITE_URL || 'https://jiyinaicha.com',
   ogImage: process.env.NEXT_PUBLIC_SITE_OG_IMAGE || '/og-default.png',

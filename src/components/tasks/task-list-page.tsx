@@ -33,8 +33,8 @@ const variantShells = {
   'image-portfolio': 'bg-[linear-gradient(180deg,#07111f_0%,#13203a_100%)] text-white',
   'profile-creator': 'bg-[linear-gradient(180deg,#0a1120_0%,#101c34_100%)] text-white',
   'profile-business': 'bg-[linear-gradient(180deg,#f6fbff_0%,#ffffff_100%)]',
-  'classified-bulletin': 'bg-[linear-gradient(180deg,#edf3e4_0%,#ffffff_100%)]',
-  'classified-market': 'bg-[linear-gradient(180deg,#f4f6ef_0%,#ffffff_100%)]',
+  'classified-bulletin': 'bg-[radial-gradient(circle_at_top_left,rgba(94,233,181,0.1),transparent_24%),linear-gradient(180deg,#f0faf5_0%,#ffffff_100%)]',
+  'classified-market': 'bg-[radial-gradient(circle_at_top_left,rgba(19,77,58,0.06),transparent_26%),linear-gradient(180deg,#f4faf7_0%,#ffffff_100%)]',
   'sbm-curation': 'bg-[linear-gradient(180deg,#fff7ee_0%,#ffffff_100%)]',
   'sbm-library': 'bg-[linear-gradient(180deg,#f7f8fc_0%,#ffffff_100%)]',
 } as const
@@ -61,6 +61,7 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
   const Icon = taskIcons[task] || LayoutGrid
 
   const isDark = ['image-masonry', 'image-portfolio', 'profile-creator'].includes(layoutKey)
+  const isClassifiedShell = layoutKey === 'classified-market' || layoutKey === 'classified-bulletin'
   const ui = isDark
     ? {
         muted: 'text-slate-300',
@@ -69,21 +70,29 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
         input: 'border-white/10 bg-white/6 text-white',
         button: 'bg-white text-slate-950 hover:bg-slate-200',
       }
-    : layoutKey.startsWith('article') || layoutKey.startsWith('sbm')
+    : isClassifiedShell
       ? {
-          muted: 'text-[#72594a]',
-          panel: 'border border-[#dbc6b6] bg-white/90',
-          soft: 'border border-[#dbc6b6] bg-[#fff8ef]',
-          input: 'border border-[#dbc6b6] bg-white text-[#2f1d16]',
-          button: 'bg-[#2f1d16] text-[#fff4e4] hover:bg-[#452920]',
+          muted: 'text-[#3d5248]',
+          panel: 'border border-[#c5d9cc] bg-white shadow-[0_22px_60px_rgba(8,40,28,0.07)]',
+          soft: 'border border-[#cfe5d6] bg-[#f4faf7]',
+          input: 'border border-[#b8d0c2] bg-white text-[#0c1a14]',
+          button: 'bg-[#134d3a] text-white hover:bg-[#0f3d2e]',
         }
-      : {
-          muted: 'text-slate-600',
-          panel: 'border border-slate-200 bg-white',
-          soft: 'border border-slate-200 bg-slate-50',
-          input: 'border border-slate-200 bg-white text-slate-950',
-          button: 'bg-slate-950 text-white hover:bg-slate-800',
-        }
+      : layoutKey.startsWith('article') || layoutKey.startsWith('sbm')
+        ? {
+            muted: 'text-[#72594a]',
+            panel: 'border border-[#dbc6b6] bg-white/90',
+            soft: 'border border-[#dbc6b6] bg-[#fff8ef]',
+            input: 'border border-[#dbc6b6] bg-white text-[#2f1d16]',
+            button: 'bg-[#2f1d16] text-[#fff4e4] hover:bg-[#452920]',
+          }
+        : {
+            muted: 'text-slate-600',
+            panel: 'border border-slate-200 bg-white',
+            soft: 'border border-slate-200 bg-slate-50',
+            input: 'border border-slate-200 bg-white text-slate-950',
+            button: 'bg-slate-950 text-white hover:bg-slate-800',
+          }
 
   return (
     <div className={`min-h-screen ${shellClass}`}>
@@ -200,15 +209,32 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
         ) : null}
 
         {layoutKey === 'classified-bulletin' || layoutKey === 'classified-market' ? (
-          <section className="mb-12 grid gap-4 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-            <div className={`rounded-[1.8rem] p-6 ${ui.panel}`}>
-              <p className={`text-xs uppercase tracking-[0.3em] ${ui.muted}`}>{taskConfig?.label || task}</p>
-              <h1 className="mt-3 text-4xl font-semibold tracking-[-0.05em] text-foreground">Fast-moving notices, offers, and responses in a compact board format.</h1>
+          <section className="mb-12 grid gap-6 lg:grid-cols-[1fr_1fr] lg:items-stretch">
+            <div className={`rounded-[2rem] p-8 ${ui.panel}`}>
+              <p className={`text-xs font-semibold uppercase tracking-[0.28em] ${ui.muted}`}>{taskConfig?.label || task}</p>
+              <h1 className="mt-4 text-4xl font-semibold tracking-[-0.04em] text-[#0c1a14]">Local deals, sharp categories, prices you can scan in seconds.</h1>
+              <p className={`mt-5 max-w-xl text-sm leading-7 ${ui.muted}`}>
+                Filters stay tied to the same classified routes—this header only changes pacing, contrast, and how urgency reads on the page.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Link href="/search" className={`inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold ${ui.button}`}>
+                  Open search
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link href="/dashboard/ads/new" className={`inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold ${ui.soft}`}>
+                  Post an ad
+                </Link>
+              </div>
             </div>
-            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-              {['Quick to scan', 'Shorter response path', 'Clearer urgency cues'].map((item) => (
-                <div key={item} className={`rounded-[1.5rem] p-5 ${ui.soft}`}>
-                  <p className="text-sm font-semibold">{item}</p>
+            <div className="grid gap-3 sm:grid-cols-3">
+              {[
+                { t: 'Price-forward cards', d: 'Titles and summaries stay compact for thumb scrolling.' },
+                { t: 'Location cues', d: 'Addresses and regions read before the fold when present.' },
+                { t: 'Fresh sort', d: 'Latest posts float up without changing feed logic.' },
+              ].map((item) => (
+                <div key={item.t} className={`rounded-[1.5rem] p-5 ${ui.soft}`}>
+                  <p className="text-sm font-semibold text-[#0c1a14]">{item.t}</p>
+                  <p className={`mt-2 text-sm leading-6 ${ui.muted}`}>{item.d}</p>
                 </div>
               ))}
             </div>
