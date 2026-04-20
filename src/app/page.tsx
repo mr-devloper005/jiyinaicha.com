@@ -1,6 +1,26 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowRight, Bookmark, Building2, Compass, FileText, Globe2, Image as ImageIcon, LayoutGrid, MapPin, ShieldCheck, Tag, User } from 'lucide-react'
+import {
+  ArrowRight,
+  Bookmark,
+  Bike,
+  Building2,
+  Car,
+  Cpu,
+  FileText,
+  Home,
+  Image as ImageIcon,
+  LayoutGrid,
+  MapPin,
+  Plus,
+  Search,
+  ShieldCheck,
+  Smartphone,
+  Sofa,
+  Sparkles,
+  Tag,
+  User,
+} from 'lucide-react'
 import { ContentImage } from '@/components/shared/content-image'
 import { NavbarShell } from '@/components/shared/navbar-shell'
 import { Footer } from '@/components/shared/footer'
@@ -72,30 +92,20 @@ function getPostMeta(post?: SitePost | null) {
   }
 }
 
-function getDirectoryTone(brandPack: string) {
-  if (brandPack === 'market-utility') {
-    return {
-      shell: 'bg-[#f5f7f1] text-[#1f2617]',
-      hero: 'bg-[linear-gradient(180deg,#eef4e4_0%,#f8faf4_100%)]',
-      panel: 'border border-[#d5ddc8] bg-white shadow-[0_24px_64px_rgba(64,76,34,0.08)]',
-      soft: 'border border-[#d5ddc8] bg-[#eff3e7]',
-      muted: 'text-[#5b664c]',
-      title: 'text-[#1f2617]',
-      badge: 'bg-[#1f2617] text-[#edf5dc]',
-      action: 'bg-[#1f2617] text-[#edf5dc] hover:bg-[#2f3a24]',
-      actionAlt: 'border border-[#d5ddc8] bg-white text-[#1f2617] hover:bg-[#eef3e7]',
-    }
-  }
+/** Classified marketplace surface — forest + mint, independent of legacy directory palettes */
+function getClassifiedMarketTone() {
   return {
-    shell: 'bg-[#f8fbff] text-slate-950',
-    hero: 'bg-[linear-gradient(180deg,#eef6ff_0%,#ffffff_100%)]',
-    panel: 'border border-slate-200 bg-white shadow-[0_24px_64px_rgba(15,23,42,0.08)]',
-    soft: 'border border-slate-200 bg-slate-50',
-    muted: 'text-slate-600',
-    title: 'text-slate-950',
-    badge: 'bg-slate-950 text-white',
-    action: 'bg-slate-950 text-white hover:bg-slate-800',
-    actionAlt: 'border border-slate-200 bg-white text-slate-950 hover:bg-slate-100',
+    shell: 'bg-[#f4faf7] text-[#0c1a14]',
+    hero: 'relative isolate min-h-[520px] overflow-hidden bg-[#0a1f16]',
+    heroOverlay: 'absolute inset-0 bg-[linear-gradient(180deg,rgba(6,28,20,0.55)_0%,rgba(8,42,30,0.88)_55%,rgba(10,52,38,0.92)_100%)]',
+    panel: 'border border-[#c5d9cc] bg-white shadow-[0_28px_70px_rgba(8,40,28,0.1)]',
+    soft: 'border border-[#cfe5d6] bg-[#f0faf5]',
+    muted: 'text-[#3d5248]',
+    title: 'text-white',
+    badge: 'border border-white/20 bg-white/10 text-white',
+    action: 'bg-[#5ee9b5] text-[#052018] shadow-[0_12px_40px_rgba(94,233,181,0.35)] hover:bg-[#4bd9a5]',
+    actionAlt: 'border border-white/25 bg-transparent text-white hover:bg-white/10',
+    pill: 'border border-[#b8d0c2] bg-white text-[#1a2e24]',
   }
 }
 
@@ -138,130 +148,230 @@ function getCurationTone() {
   }
 }
 
-function DirectoryHome({ primaryTask, enabledTasks, listingPosts, classifiedPosts, profilePosts, brandPack }: {
-  primaryTask?: EnabledTask
+const HERO_PHOTO =
+  'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=2000&q=80'
+
+const QUICK_BROWSE = [
+  { label: 'Vehicles', slug: 'automotive', Icon: Car },
+  { label: 'Real Estate', slug: 'real-estate', Icon: Building2 },
+  { label: 'Appliances', slug: 'home-improvement', Icon: Home },
+  { label: 'Mobiles', slug: 'technology', Icon: Smartphone },
+  { label: 'Electronics', slug: 'electric', Icon: Cpu },
+  { label: 'Furniture', slug: 'furniture', Icon: Sofa },
+  { label: 'Bikes', slug: 'game-sports', Icon: Bike },
+] as const
+
+const POPULAR_CATEGORIES = [
+  { name: 'Vehicles', slug: 'automotive', ads: '1.2k', src: 'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=900&q=80' },
+  { name: 'Mobiles', slug: 'technology', ads: '980', src: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=900&q=80' },
+  { name: 'Homes', slug: 'real-estate', ads: '640', src: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=900&q=80' },
+  { name: 'Furniture', slug: 'furniture', ads: '420', src: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=900&q=80' },
+] as const
+
+function DirectoryHome({ enabledTasks, listingPosts, classifiedPosts, profilePosts }: {
   enabledTasks: EnabledTask[]
   listingPosts: SitePost[]
   classifiedPosts: SitePost[]
   profilePosts: SitePost[]
-  brandPack: string
 }) {
-  const tone = getDirectoryTone(brandPack)
-  const featuredListings = (listingPosts.length ? listingPosts : classifiedPosts).slice(0, 3)
-  const featuredTaskKey: TaskKey = listingPosts.length ? 'listing' : 'classified'
+  const tone = getClassifiedMarketTone()
+  const featuredListings = (classifiedPosts.length ? classifiedPosts : listingPosts).slice(0, 3)
+  const featuredTaskKey: TaskKey = classifiedPosts.length ? 'classified' : 'listing'
   const quickRoutes = enabledTasks.slice(0, 4)
+  const freshGrid = (profilePosts.length ? profilePosts : classifiedPosts).slice(0, 4)
 
   return (
-    <main>
+    <main className="overflow-x-hidden">
       <section className={tone.hero}>
-        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-18">
-          <div className="grid gap-8 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
+        <div className="absolute inset-0">
+          <ContentImage src={HERO_PHOTO} alt="Warm interior background" fill className="object-cover opacity-90" priority sizes="100vw" intrinsicWidth={2000} intrinsicHeight={1200} />
+        </div>
+        <div className={tone.heroOverlay} />
+        <div className="relative mx-auto flex max-w-5xl flex-col items-center px-4 pb-20 pt-16 text-center sm:px-6 lg:px-8 lg:pb-24 lg:pt-20">
+          <span className={`inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.28em] ${tone.badge}`}>
+            <Sparkles className="h-3.5 w-3.5 text-[#5ee9b5]" />
+            {siteContent.hero.badge}
+          </span>
+          <h1 className={`mt-7 max-w-3xl text-4xl font-semibold leading-[1.08] tracking-[-0.04em] sm:text-5xl lg:text-[3.15rem] ${tone.title}`}>
+            {siteContent.hero.title[0]} <span className="block text-[0.92em] font-medium text-white/95">{siteContent.hero.title[1]}</span>
+          </h1>
+          <p className="mt-5 max-w-2xl text-base leading-relaxed text-white/80 sm:text-lg">{siteContent.hero.description}</p>
+          <Link
+            href="/dashboard/ads/new"
+            className={`mt-8 inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition ${tone.actionAlt}`}
+          >
+            <Plus className="h-4 w-4" />
+            Post Ad now
+          </Link>
+
+          <form
+            action="/search"
+            method="get"
+            className={`mt-10 flex w-full max-w-3xl flex-col gap-3 rounded-full p-2 shadow-[0_24px_80px_rgba(0,0,0,0.35)] sm:flex-row sm:items-stretch ${tone.pill}`}
+          >
+            <label className="sr-only" htmlFor="hq">Search</label>
+            <input
+              id="hq"
+              name="q"
+              placeholder={siteContent.hero.searchPlaceholder}
+              className="min-h-12 flex-1 rounded-full border-0 bg-transparent px-5 text-sm text-[#0c1a14] outline-none placeholder:text-[#5a6f65]"
+            />
+            <div className="flex items-center gap-2 border-t border-[#dfece5] px-3 py-2 sm:border-l sm:border-t-0 sm:py-0">
+              <MapPin className="h-4 w-4 shrink-0 text-[#2d4a3c]" aria-hidden />
+              <select
+                name="category"
+                className="w-full min-w-[8rem] cursor-pointer bg-transparent text-sm font-medium text-[#1a2e24] outline-none"
+                defaultValue=""
+                aria-label="Area or category"
+              >
+                <option value="">Bangladesh</option>
+                <option value="automotive">Vehicles</option>
+                <option value="real-estate">Real estate</option>
+                <option value="technology">Mobiles & tech</option>
+              </select>
+            </div>
+            <button
+              type="submit"
+              className="inline-flex min-h-12 min-w-12 shrink-0 items-center justify-center rounded-full bg-[#134d3a] text-white transition hover:bg-[#0f3d2e] sm:min-w-[3.25rem]"
+              aria-label="Search"
+            >
+              <Search className="h-5 w-5" />
+            </button>
+          </form>
+
+          <div className="mt-10 flex max-w-3xl flex-wrap justify-center gap-x-6 gap-y-3 text-sm text-white/85">
+            {QUICK_BROWSE.map(({ label, slug, Icon }) => (
+              <Link key={slug} href={`/classifieds?category=${slug}`} className="inline-flex items-center gap-2 transition hover:text-[#5ee9b5]">
+                <Icon className="h-4 w-4 opacity-80" strokeWidth={1.75} />
+                <span className="font-medium">{label}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[#f6fbf8] py-14 sm:py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <span className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.24em] ${tone.badge}`}>
-                <Compass className="h-3.5 w-3.5" />
-                Local discovery product
-              </span>
-              <h1 className={`mt-6 max-w-4xl text-5xl font-semibold tracking-[-0.06em] sm:text-6xl ${tone.title}`}>
-                Search businesses, compare options, and act fast without digging through generic feeds.
-              </h1>
-              <p className={`mt-6 max-w-2xl text-base leading-8 ${tone.muted}`}>{SITE_CONFIG.description}</p>
-
-              <div className={`mt-8 grid gap-3 rounded-[2rem] p-4 ${tone.panel} md:grid-cols-[1.25fr_0.8fr_auto]`}>
-                <div className="rounded-full bg-black/5 px-4 py-3 text-sm">What do you need today?</div>
-                <div className="rounded-full bg-black/5 px-4 py-3 text-sm">Choose area or city</div>
-                <Link href={primaryTask?.route || '/listings'} className={`inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold ${tone.action}`}>
-                  Browse now
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </div>
-
-              <div className="mt-8 grid gap-3 sm:grid-cols-3">
-                {[
-                  ['Verified businesses', `${featuredListings.length || 3}+ highlighted surfaces`],
-                  ['Fast scan rhythm', 'More utility, less filler'],
-                  ['Action first', 'Call, visit, shortlist, compare'],
-                ].map(([label, value]) => (
-                  <div key={label} className={`rounded-[1.4rem] p-4 ${tone.soft}`}>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.22em] opacity-70">{label}</p>
-                    <p className="mt-2 text-lg font-semibold">{value}</p>
-                  </div>
-                ))}
-              </div>
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#3d5248]">Browse with intent</p>
+              <h2 className="mt-2 text-3xl font-semibold tracking-[-0.04em] text-[#0c1a14]">Popular categories</h2>
             </div>
-
-            <div className="grid gap-4">
-              <div className={`rounded-[2rem] p-6 ${tone.panel}`}>
-                <div className="flex items-center justify-between gap-4">
-                  <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.22em] opacity-70">Primary lane</p>
-                    <h2 className="mt-2 text-3xl font-semibold">{primaryTask?.label || 'Listings'}</h2>
-                  </div>
-                  <ShieldCheck className="h-6 w-6" />
+            <Link href="/classifieds" className="inline-flex items-center gap-2 text-sm font-semibold text-[#134d3a] hover:underline">
+              View more
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {POPULAR_CATEGORIES.map((cat) => (
+              <Link
+                key={cat.slug}
+                href={`/classifieds?category=${cat.slug}`}
+                className="group relative aspect-[3/4] overflow-hidden rounded-[1.75rem] shadow-[0_20px_50px_rgba(8,40,28,0.12)]"
+              >
+                <ContentImage src={cat.src} alt={cat.name} fill className="object-cover transition duration-500 group-hover:scale-105" sizes="(max-width:1024px) 50vw, 25vw" />
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_35%,rgba(5,20,14,0.92)_100%)]" />
+                <div className="absolute bottom-0 left-0 right-0 p-5 text-white">
+                  <p className="text-lg font-semibold">{cat.name}</p>
+                  <p className="mt-1 text-sm text-white/75">{cat.ads} ads</p>
                 </div>
-                <p className={`mt-4 text-sm leading-7 ${tone.muted}`}>{primaryTask?.description || 'Structured discovery for services, offers, and business surfaces.'}</p>
-              </div>
-
-              <div className="grid gap-4 sm:grid-cols-2">
-                {quickRoutes.map((task) => {
-                  const Icon = taskIcons[task.key as TaskKey] || LayoutGrid
-                  return (
-                    <Link key={task.key} href={task.route} className={`rounded-[1.6rem] p-5 ${tone.soft}`}>
-                      <Icon className="h-5 w-5" />
-                      <h3 className="mt-4 text-lg font-semibold">{task.label}</h3>
-                      <p className={`mt-2 text-sm leading-7 ${tone.muted}`}>{task.description}</p>
-                    </Link>
-                  )
-                })}
-              </div>
-            </div>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-        <div className="flex items-end justify-between gap-4 border-b border-border pb-6">
+        <div className="flex flex-col justify-between gap-6 border-b border-[#d4e8dd] pb-8 sm:flex-row sm:items-end">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground">Featured businesses</p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em]">Strong listings with clearer trust cues.</h2>
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#3d5248]">Fresh on the board</p>
+            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-[#0c1a14]">Deals worth a second look</h2>
           </div>
-          <Link href="/listings" className="text-sm font-semibold text-primary hover:opacity-80">Open listings</Link>
+          <Link href="/classifieds" className="text-sm font-semibold text-[#134d3a] hover:underline">
+            Browse all ads
+          </Link>
         </div>
-        <div className="mt-8 grid gap-6 lg:grid-cols-3">
+        <div className="mt-10 grid gap-6 lg:grid-cols-3">
           {featuredListings.map((post) => (
             <TaskPostCard key={post.id} post={post} href={getTaskHref(featuredTaskKey, post.slug)} taskKey={featuredTaskKey} />
           ))}
         </div>
       </section>
 
-      <section className={`${tone.shell}`}>
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[0.92fr_1.08fr] lg:px-8">
-          <div className={`rounded-[2rem] p-7 ${tone.panel}`}>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] opacity-70">What makes this different</p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em]">Built like a business directory, not a recolored content site.</h2>
-            <ul className={`mt-6 space-y-3 text-sm leading-7 ${tone.muted}`}>
-              <li>Search-first hero instead of a magazine headline.</li>
-              <li>Action-oriented listing cards with trust metadata.</li>
-              <li>Support lanes for offers, businesses, and profiles.</li>
+      <section className={tone.shell}>
+        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[0.95fr_1.05fr] lg:px-8 lg:py-16">
+          <div className={`rounded-[2rem] p-8 ${tone.panel}`}>
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#3d5248]">Buying & selling is easy</p>
+            <h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-[#0c1a14]">Post in minutes. Buyers find you faster.</h2>
+            <ul className={`mt-6 space-y-4 text-sm leading-7 ${tone.muted}`}>
+              <li className="flex gap-3">
+                <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-[#134d3a]" />
+                Clear categories and location cues keep scans honest.
+              </li>
+              <li className="flex gap-3">
+                <Search className="mt-0.5 h-5 w-5 shrink-0 text-[#134d3a]" />
+                Search is tuned for titles, tags, and descriptions—no noisy feeds.
+              </li>
+              <li className="flex gap-3">
+                <Tag className="mt-0.5 h-5 w-5 shrink-0 text-[#134d3a]" />
+                One primary marketplace lane so the story stays simple.
+              </li>
             </ul>
           </div>
           <div className="grid gap-4 md:grid-cols-2">
-            {(profilePosts.length ? profilePosts : classifiedPosts).slice(0, 4).map((post) => {
+            {freshGrid.map((post) => {
               const meta = getPostMeta(post)
-              const taskKey = resolveTaskKey(post.task, profilePosts.length ? 'profile' : 'classified')
+              const taskKey = resolveTaskKey(post.task, 'classified')
               return (
-                <Link key={post.id} href={getTaskHref(taskKey, post.slug)} className={`overflow-hidden rounded-[1.8rem] ${tone.panel}`}>
+                <Link key={post.id} href={getTaskHref(taskKey, post.slug)} className={`overflow-hidden rounded-[1.85rem] ${tone.panel} transition hover:-translate-y-0.5 hover:shadow-[0_22px_55px_rgba(8,40,28,0.12)]`}>
                   <div className="relative h-44 overflow-hidden">
                     <ContentImage src={getPostImage(post)} alt={post.title} fill className="object-cover" />
                   </div>
                   <div className="p-5">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.24em] opacity-70">{meta.category || post.task || 'Profile'}</p>
-                    <h3 className="mt-2 text-xl font-semibold">{post.title}</h3>
-                    <p className={`mt-2 text-sm leading-7 ${tone.muted}`}>{post.summary || 'Quick access to local information and related surfaces.'}</p>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#5a6f65]">{meta.category || 'Classified'}</p>
+                    <h3 className="mt-2 text-lg font-semibold text-[#0c1a14]">{post.title}</h3>
+                    <p className={`mt-2 text-sm leading-7 ${tone.muted}`}>{post.summary || 'Local offer with a short, scannable description.'}</p>
                   </div>
                 </Link>
               )
             })}
           </div>
+        </div>
+      </section>
+
+      {quickRoutes.length > 0 ? (
+        <section className="border-t border-[#d4e8dd] bg-white py-12">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <p className="text-center text-xs font-semibold uppercase tracking-[0.24em] text-[#3d5248]">Primary surfaces</p>
+            <div className="mx-auto mt-6 flex max-w-3xl flex-wrap justify-center gap-4">
+              {quickRoutes.map((task) => {
+                const Icon = taskIcons[task.key as TaskKey] || LayoutGrid
+                return (
+                  <Link key={task.key} href={task.route} className={`flex min-w-[200px] flex-1 flex-col rounded-[1.5rem] border border-[#cfe5d6] bg-[#f7fdf9] p-5 transition hover:border-[#134d3a]/35`}>
+                    <Icon className="h-5 w-5 text-[#134d3a]" />
+                    <span className="mt-3 text-base font-semibold text-[#0c1a14]">{task.label}</span>
+                    <span className="mt-1 text-sm text-[#5a6f65]">{task.description}</span>
+                  </Link>
+                )
+              })}
+            </div>
+          </div>
+        </section>
+      ) : null}
+
+      <section className="mx-auto max-w-7xl px-4 pb-20 pt-4 sm:px-6 lg:px-8">
+        <div className="relative overflow-hidden rounded-[2.25rem] bg-[#0f2419] px-8 py-12 text-center text-white shadow-[0_32px_90px_rgba(5,24,18,0.35)] sm:px-12">
+          <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-[#5ee9b5]/15 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-20 -left-10 h-40 w-40 rounded-full bg-emerald-400/10 blur-3xl" />
+          <h2 className="relative text-2xl font-semibold tracking-[-0.03em] sm:text-3xl">Post your ad now</h2>
+          <p className="relative mx-auto mt-3 max-w-lg text-sm text-white/75">Reach local buyers without leaving this marketplace shell—same routes, clearer presentation.</p>
+          <Link
+            href="/dashboard/ads/new"
+            className="relative mt-8 inline-flex items-center gap-2 rounded-full bg-[#5ee9b5] px-8 py-3.5 text-sm font-semibold text-[#052018] shadow-[0_14px_40px_rgba(94,233,181,0.35)] transition hover:bg-[#4bd9a5]"
+          >
+            <Plus className="h-4 w-4" />
+            Post Ad now
+          </Link>
         </div>
       </section>
     </main>
@@ -526,12 +636,10 @@ export default async function HomePage() {
       <SchemaJsonLd data={schemaData} />
       {productKind === 'directory' ? (
         <DirectoryHome
-          primaryTask={primaryTask}
           enabledTasks={enabledTasks}
           listingPosts={listingPosts}
           classifiedPosts={classifiedPosts}
           profilePosts={profilePosts}
-          brandPack={recipe.brandPack}
         />
       ) : null}
       {productKind === 'editorial' ? (

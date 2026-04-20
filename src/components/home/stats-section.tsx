@@ -1,33 +1,33 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { FileText, Building2, Tag, Users } from 'lucide-react'
+import { MapPin, Tag, Clock, Users } from 'lucide-react'
 
 const stats = [
   {
-    icon: FileText,
-    value: '25K+',
-    label: 'Articles Published',
-    description: 'Quality content created by our community'
-  },
-  {
-    icon: Building2,
-    value: '12K+',
-    label: 'Business Listings',
-    description: 'Verified businesses and services'
-  },
-  {
     icon: Tag,
     value: '50K+',
-    label: 'Classified Ads',
-    description: 'Items listed and sold'
+    label: 'Classified ads',
+    description: 'Items and services posted by local sellers',
+  },
+  {
+    icon: MapPin,
+    value: '120+',
+    label: 'Towns & areas',
+    description: 'Neighborhoods represented in search',
+  },
+  {
+    icon: Clock,
+    value: '24h',
+    label: 'Avg. first reply',
+    description: 'Typical time to hear back on an ad',
   },
   {
     icon: Users,
     value: '100K+',
-    label: 'Active Users',
-    description: 'Growing community members'
-  }
+    label: 'Monthly visits',
+    description: 'Buyers browsing categories every month',
+  },
 ]
 
 export function StatsSection() {
@@ -38,9 +38,7 @@ export function StatsSection() {
           <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
             Platform in Numbers
           </h2>
-          <p className="mt-2 text-muted-foreground">
-            Join our thriving community of creators and businesses
-          </p>
+          <p className="mt-2 text-muted-foreground">A marketplace tuned for local deals—not generic feeds.</p>
         </div>
 
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">

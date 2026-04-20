@@ -4,31 +4,31 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: oklch(0.985 0.006 84);
-  --foreground: oklch(0.23 0.03 20);
-  --card: oklch(0.992 0.004 84 / 0.96);
-  --card-foreground: oklch(0.23 0.03 20);
-  --popover: oklch(0.992 0.004 84 / 0.98);
-  --popover-foreground: oklch(0.23 0.03 20);
-  --primary: oklch(0.41 0.15 10);
-  --primary-foreground: oklch(0.99 0.005 84);
-  --secondary: oklch(0.95 0.02 85);
-  --secondary-foreground: oklch(0.3 0.04 20);
-  --muted: oklch(0.955 0.012 85);
-  --muted-foreground: oklch(0.47 0.04 28);
-  --accent: oklch(0.76 0.1 155);
-  --accent-foreground: oklch(0.18 0.03 20);
-  --destructive: oklch(0.6 0.2 25);
-  --destructive-foreground: oklch(0.98 0.005 84);
-  --border: oklch(0.88 0.02 70);
-  --input: oklch(0.975 0.01 84);
-  --ring: oklch(0.41 0.15 10);
-  --chart-1: oklch(0.41 0.15 10);
-  --chart-2: oklch(0.56 0.17 18);
-  --chart-3: oklch(0.76 0.1 155);
-  --chart-4: oklch(0.9 0.05 102);
+  --background: oklch(0.98 0.012 155);
+  --foreground: oklch(0.22 0.04 155);
+  --card: oklch(0.995 0.008 155 / 0.96);
+  --card-foreground: oklch(0.22 0.04 155);
+  --popover: oklch(0.995 0.006 155 / 0.98);
+  --popover-foreground: oklch(0.22 0.04 155);
+  --primary: oklch(0.38 0.09 155);
+  --primary-foreground: oklch(0.99 0.01 155);
+  --secondary: oklch(0.94 0.02 155);
+  --secondary-foreground: oklch(0.28 0.04 155);
+  --muted: oklch(0.95 0.015 155);
+  --muted-foreground: oklch(0.45 0.04 155);
+  --accent: oklch(0.82 0.14 165);
+  --accent-foreground: oklch(0.18 0.05 155);
+  --destructive: oklch(0.55 0.18 25);
+  --destructive-foreground: oklch(0.98 0.01 155);
+  --border: oklch(0.88 0.03 155);
+  --input: oklch(0.97 0.012 155);
+  --ring: oklch(0.42 0.08 155);
+  --chart-1: oklch(0.38 0.09 155);
+  --chart-2: oklch(0.55 0.1 155);
+  --chart-3: oklch(0.82 0.14 165);
+  --chart-4: oklch(0.72 0.06 155);
   --chart-5: oklch(0.62 0.08 175);
-  --radius: 1.3rem;
+  --radius: 1.35rem;
   --sidebar: oklch(0.99 0.005 84);
   --sidebar-foreground: oklch(0.23 0.03 20);
   --sidebar-primary: oklch(0.41 0.15 10);
@@ -128,9 +128,9 @@
     @apply bg-background text-foreground;
     min-height: 100vh;
     background-image:
-      radial-gradient(circle at top left, rgba(110, 26, 55, 0.09), transparent 32%),
-      radial-gradient(circle at top right, rgba(114, 186, 169, 0.12), transparent 28%),
-      linear-gradient(180deg, rgba(255, 252, 246, 0.96) 0%, rgba(250, 244, 235, 0.98) 36%, rgba(247, 241, 230, 1) 100%);
+      radial-gradient(circle at top left, rgba(16, 77, 58, 0.07), transparent 30%),
+      radial-gradient(circle at top right, rgba(94, 233, 181, 0.1), transparent 26%),
+      linear-gradient(180deg, rgba(246, 251, 248, 0.98) 0%, rgba(255, 255, 255, 1) 42%, rgba(241, 248, 244, 1) 100%);
     background-attachment: fixed;
   }
 
@@ -162,23 +162,23 @@
   }
 
   ::selection {
-    background: rgba(174, 36, 72, 0.18);
+    background: rgba(94, 233, 181, 0.28);
     color: inherit;
   }
 }
 
 @layer components {
   .paper-panel {
-    background: linear-gradient(180deg, rgba(255, 252, 247, 0.95), rgba(255, 248, 240, 0.88));
-    border: 1px solid rgba(110, 26, 55, 0.12);
-    box-shadow: 0 20px 60px rgba(80, 28, 36, 0.08);
+    background: linear-gradient(180deg, rgba(255, 252, 250, 0.95), rgba(244, 251, 247, 0.92));
+    border: 1px solid rgba(19, 77, 58, 0.12);
+    box-shadow: 0 20px 60px rgba(8, 40, 28, 0.07);
   }
 
   .editorial-label {
     @apply inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.24em];
-    background: rgba(110, 26, 55, 0.08);
-    color: rgb(110, 26, 55);
-    border: 1px solid rgba(110, 26, 55, 0.12);
+    background: rgba(19, 77, 58, 0.08);
+    color: rgb(19, 77, 58);
+    border: 1px solid rgba(19, 77, 58, 0.12);
   }
 
   .editorial-divider {
@@ -192,7 +192,7 @@
     bottom: -1px;
     width: 132px;
     height: 2px;
-    background: linear-gradient(90deg, rgb(174, 36, 72), rgba(114, 186, 169, 0.55));
+    background: linear-gradient(90deg, rgb(19, 77, 58), rgba(94, 233, 181, 0.65));
   }
 }
 
@@ -206,12 +206,12 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(110, 26, 55, 0.25);
+  background: rgba(19, 77, 58, 0.28);
   border-radius: 999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(110, 26, 55, 0.42);
+  background: rgba(19, 77, 58, 0.45);
 }
 
 .reading-progress {
@@ -219,7 +219,7 @@
   top: 0;
   left: 0;
   height: 2px;
-  background: linear-gradient(90deg, rgb(174, 36, 72), rgb(114, 186, 169));
+  background: linear-gradient(90deg, rgb(19, 77, 58), rgb(94, 233, 181));
   z-index: 100;
   transition: width 0.1s ease-out;
 }
@@ -229,7 +229,7 @@
   font-weight: 700;
   line-height: 1.25;
   margin: 2.2rem 0 1rem;
-  color: rgb(110, 26, 55);
+  color: rgb(19, 77, 58);
 }
 
 .article-content h3 {
@@ -244,18 +244,20 @@
 }
 
 .article-content a {
-  color: rgb(174, 36, 72);
+  color: rgb(19, 77, 58);
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
 }
 
 
-body[data-site-shell="directory"] {
+body[data-site-shell="directory"],
+body[data-site-shell="classified-home"],
+body[data-site-shell="listing-home"] {
   background-image:
-    radial-gradient(circle at top left, rgba(56, 189, 248, 0.12), transparent 24%),
-    radial-gradient(circle at top right, rgba(15, 23, 42, 0.08), transparent 22%),
-    linear-gradient(180deg, rgba(245, 250, 255, 0.98) 0%, rgba(255, 255, 255, 1) 40%, rgba(248, 250, 252, 1) 100%);
+    radial-gradient(circle at top left, rgba(16, 77, 58, 0.08), transparent 26%),
+    radial-gradient(circle at top right, rgba(94, 233, 181, 0.1), transparent 24%),
+    linear-gradient(180deg, rgba(244, 251, 247, 0.98) 0%, rgba(255, 255, 255, 1) 44%, rgba(240, 248, 243, 1) 100%);
 }
 
 body[data-site-shell="editorial"] {
@@ -300,8 +302,8 @@ body[data-site-shell="market"] {
 
 .factory-brand-market {
   background-image:
-    radial-gradient(circle at top left, rgba(132, 204, 22, 0.08), transparent 24%),
-    linear-gradient(180deg, rgba(244, 246, 239, 0.98) 0%, rgba(255, 255, 255, 1) 100%);
+    radial-gradient(circle at top left, rgba(94, 233, 181, 0.1), transparent 26%),
+    linear-gradient(180deg, rgba(244, 251, 247, 0.98) 0%, rgba(255, 255, 255, 1) 100%);
 }
 
 .factory-font-editorial h1,

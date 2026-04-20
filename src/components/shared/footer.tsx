@@ -28,12 +28,10 @@ const footerLinks = {
     { name: 'About', href: '/about' },
     { name: 'Team', href: '/team' },
     { name: 'Careers', href: '/careers' },
-    { name: 'Blog', href: '/blog' },
     { name: 'Press', href: '/press' },
   ],
   resources: [
     { name: 'Help Center', href: '/help' },
-    { name: 'Community', href: '/community' },
     { name: 'Developers', href: '/developers' },
     { name: 'Status', href: '/status' },
   ],
@@ -51,6 +49,9 @@ const socialLinks = [
   { name: 'LinkedIn', href: 'https://linkedin.com', icon: Linkedin },
 ]
 
+/** Routes for other base-repo tasks — low-emphasis footer discovery; classifieds stay primary in nav. */
+const SECONDARY_FOOTER_TASK_KEYS: TaskKey[] = ['article', 'listing', 'image', 'profile', 'sbm', 'pdf']
+
 export function Footer() {
   if (FOOTER_OVERRIDE_ENABLED) {
     return <FooterOverride />
@@ -61,19 +62,78 @@ export function Footer() {
   const primaryTask = enabledTasks.find((task) => task.key === recipe.primaryTask) || enabledTasks[0]
 
   if (recipe.footer === 'minimal-footer') {
+    const secondaryTaskLinks = SITE_CONFIG.tasks.filter((task) => SECONDARY_FOOTER_TASK_KEYS.includes(task.key))
+
     return (
-      <footer className="border-t border-[#d7deca] bg-[#f4f6ef] text-[#1f2617]">
-        <div className="mx-auto flex max-w-7xl flex-col gap-5 px-4 py-8 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
-          <div>
-            <p className="text-lg font-semibold">{SITE_CONFIG.name}</p>
-            <p className="mt-1 text-sm text-[#56604b]">{SITE_CONFIG.description}</p>
+      <footer className="border-t border-emerald-900/35 bg-[#0c1f17] text-emerald-50/95">
+        <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+          <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
+            <div className="max-w-md">
+              <p className="text-lg font-semibold tracking-tight lowercase text-white">{SITE_CONFIG.name}.</p>
+              <p className="mt-1 text-sm text-emerald-100/70">{SITE_CONFIG.description}</p>
+            </div>
+
+            <div className="flex min-w-0 flex-1 flex-col gap-8 lg:max-w-3xl lg:items-end">
+              <div className="w-full lg:text-right">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-emerald-200/55">Classifieds and site</p>
+                <div className="mt-3 flex flex-wrap justify-start gap-2 lg:justify-end">
+                  {enabledTasks.map((task) => (
+                    <Link
+                      key={task.key}
+                      href={task.route}
+                      className="rounded-full border border-[#5ee9b5]/35 bg-[#5ee9b5]/10 px-4 py-2 text-sm font-semibold text-white shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition hover:border-[#5ee9b5]/55 hover:bg-[#5ee9b5]/18"
+                    >
+                      {task.label}
+                    </Link>
+                  ))}
+                  <Link
+                    href="/dashboard/ads/new"
+                    className="rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-medium text-emerald-50 transition hover:bg-white/10"
+                  >
+                    Post an ad
+                  </Link>
+                  <Link href="/search" className="rounded-full border border-white/12 px-4 py-2 text-sm font-medium text-emerald-100/90 hover:bg-white/10">
+                    Search
+                  </Link>
+                  <Link href="/help" className="rounded-full border border-white/12 px-4 py-2 text-sm font-medium text-emerald-100/90 hover:bg-white/10">
+                    Help
+                  </Link>
+                  <Link href="/about" className="rounded-full border border-white/12 px-4 py-2 text-sm font-medium text-emerald-100/90 hover:bg-white/10">
+                    About
+                  </Link>
+                  <Link href="/contact" className="rounded-full border border-white/12 px-4 py-2 text-sm font-medium text-emerald-100/90 hover:bg-white/10">
+                    Contact
+                  </Link>
+                </div>
+              </div>
+
+              <div className="w-full border-t border-white/10 pt-6 lg:text-right">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-emerald-200/40">More platform sections</p>
+                <nav className="mt-3 flex flex-wrap justify-start gap-x-4 gap-y-2 text-sm lg:justify-end" aria-label="Additional content types">
+                  {secondaryTaskLinks.map((task) => (
+                    <Link key={task.key} href={task.route} className="text-emerald-200/75 underline-offset-4 transition hover:text-[#5ee9b5] hover:underline">
+                      {task.label}
+                    </Link>
+                  ))}
+                </nav>
+              </div>
+            </div>
           </div>
-          <div className="flex flex-wrap gap-3">
-            {enabledTasks.slice(0, 5).map((task) => (
-              <Link key={task.key} href={task.route} className="rounded-lg border border-[#d7deca] bg-white px-3 py-2 text-sm font-medium text-[#1f2617] hover:bg-[#ebefdf]">
-                {task.label}
+        </div>
+        <div className="border-t border-white/8">
+          <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-4 text-xs text-emerald-200/45 sm:flex-row sm:px-6 lg:px-8">
+            <p>&copy; {new Date().getFullYear()} {SITE_CONFIG.name}. All rights reserved.</p>
+            <div className="flex flex-wrap justify-center gap-x-4 gap-y-1">
+              <Link href="/privacy" className="hover:text-emerald-200/80">
+                Privacy
               </Link>
-            ))}
+              <Link href="/terms" className="hover:text-emerald-200/80">
+                Terms
+              </Link>
+              <Link href="/cookies" className="hover:text-emerald-200/80">
+                Cookies
+              </Link>
+            </div>
           </div>
         </div>
       </footer>
@@ -87,8 +147,14 @@ export function Footer() {
           <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr_1fr]">
             <div className="rounded-[2rem] border border-white/10 bg-white/5 p-7">
               <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/12 bg-white/8 p-1.5">
-                  <img src="/favicon.png?v=20260401" alt={`${SITE_CONFIG.name} logo`} width="48" height="48" className="h-full w-full object-contain" />
+                <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full border border-white/15 bg-white/[0.08]">
+                  <img
+                    src="/favicon.png?v=20260420"
+                    alt={`${SITE_CONFIG.name} logo`}
+                    width={64}
+                    height={64}
+                    className="absolute left-1/2 top-1/2 h-[132%] w-[132%] max-w-none -translate-x-1/2 -translate-y-1/2 object-contain"
+                  />
                 </div>
                 <div>
                   <p className="text-lg font-semibold">{SITE_CONFIG.name}</p>
@@ -179,8 +245,14 @@ export function Footer() {
         <div className="grid gap-10 md:grid-cols-[1.2fr_0.8fr_0.8fr_0.8fr_0.8fr]">
           <div>
             <Link href="/" className="flex items-center gap-3">
-              <div className="h-11 w-11 overflow-hidden rounded-2xl border border-slate-200 bg-white p-1 shadow-sm">
-                <img src="/favicon.png?v=20260401" alt={`${SITE_CONFIG.name} logo`} width="44" height="44" className="h-full w-full object-contain" />
+              <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full border border-slate-200 bg-white shadow-sm">
+                <img
+                  src="/favicon.png?v=20260420"
+                  alt={`${SITE_CONFIG.name} logo`}
+                  width={56}
+                  height={56}
+                  className="absolute left-1/2 top-1/2 h-[132%] w-[132%] max-w-none -translate-x-1/2 -translate-y-1/2 object-contain"
+                />
               </div>
               <div>
                 <span className="block text-lg font-semibold">{SITE_CONFIG.name}</span>

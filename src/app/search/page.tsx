@@ -42,7 +42,9 @@ export default async function SearchPage({
       ? feed.posts
       : useMaster
         ? []
-        : SITE_CONFIG.tasks.flatMap((task) => getMockPostsForTask(task.key));
+        : SITE_CONFIG.tasks
+          .filter((t) => t.enabled)
+          .flatMap((task) => getMockPostsForTask(task.key));
 
   const filtered = posts.filter((post) => {
     const content = post.content && typeof post.content === "object" ? post.content : {};
@@ -76,7 +78,7 @@ export default async function SearchPage({
       description={
         query
           ? `Results for "${query}"`
-          : "Browse the latest posts across every task."
+          : "Search local classifieds and recent listings on this site."
       }
       actions={
         <form action="/search" className="flex w-full gap-2 sm:w-auto">
@@ -88,7 +90,7 @@ export default async function SearchPage({
             <Input
               name="q"
               defaultValue={query}
-              placeholder="Search across tasks..."
+              placeholder="Search classifieds…"
               className="h-11 pl-9"
             />
           </div>
