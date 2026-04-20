@@ -2,28 +2,76 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from '@/components/ui/command'
+import {
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+} from '@/components/ui/command'
 import { useToast } from '@/components/ui/use-toast'
-import { FileText, Plus, Tag, Bookmark, Settings, Search } from 'lucide-react'
+import {
+  Plus,
+  Settings,
+  Search,
+  Tag,
+  Building2,
+  FileText,
+  Image as ImageIcon,
+  User,
+  LayoutGrid,
+  type LucideIcon,
+} from 'lucide-react'
+import { SITE_CONFIG, type TaskKey } from '@/lib/site-config'
 
-const quickLinks = [
-  { label: 'Go to Social Bookmarks', href: '/sbm', icon: Bookmark },
-  { label: 'Go to Articles', href: '/articles', icon: FileText },
-  { label: 'Go to Listings', href: '/listings', icon: Tag },
-  { label: 'Go to Settings', href: '/settings', icon: Settings },
-]
-
-const createActions = [
-  { label: 'Create Article', href: '/create/article', icon: Plus },
-  { label: 'Create Listing', href: '/create/listing', icon: Plus },
-  { label: 'Create Classified', href: '/create/classified', icon: Plus },
-  { label: 'Submit Bookmark', href: '/create/sbm', icon: Plus },
-]
+const taskNavigateIcons: Partial<Record<TaskKey, LucideIcon>> = {
+  listing: Building2,
+  classified: Tag,
+  article: FileText,
+  image: ImageIcon,
+  profile: User,
+  sbm: LayoutGrid,
+  pdf: FileText,
+  org: Building2,
+  social: LayoutGrid,
+  comment: FileText,
+}
 
 export function CommandPalette() {
   const router = useRouter()
   const { toast } = useToast()
   const [open, setOpen] = useState(false)
+
+  const quickLinks = useMemo(() => {
+    const taskLinks = SITE_CONFIG.tasks
+      .filter((t) => t.enabled)
+      .map((t) => {
+        const Icon = taskNavigateIcons[t.key] || Tag
+        return {
+          label: `Go to ${t.label}`,
+          href: t.route,
+          icon: Icon,
+        }
+      })
+    return [...taskLinks, { label: 'Go to Settings', href: '/settings', icon: Settings }]
+  }, [])
+
+  const createActions = useMemo(
+    () =>
+      SITE_CONFIG.tasks
+        .filter((t) => t.enabled)
+        .map((t) => ({
+          label:
+            t.key === 'classified'
+              ? 'Post a classified ad'
+              : `Create ${t.label.replace(/s$/, '')}`,
+          href: `/create/${t.key}`,
+          icon: Plus,
+        })),
+    []
+  )
 
   useEffect(() => {
     const handler = (event: KeyboardEvent) => {
@@ -35,8 +83,6 @@ export function CommandPalette() {
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
   }, [])
-
-  const allItems = useMemo(() => [...quickLinks, ...createActions], [])
 
   return (
     <CommandDialog open={open} onOpenChange={setOpen} title="Command Palette" description="Search for a command to run...">

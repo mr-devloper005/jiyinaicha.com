@@ -17,15 +17,24 @@ type StaticSitemapRoute = {
   priority: number;
 };
 
+const enabledTaskKeys = new Set(
+  SITE_CONFIG.tasks.filter((t) => t.enabled).map((t) => t.key as string)
+);
+
+/** Core pages + only routes for tasks enabled in site config (classifieds-only for this product). */
 const STATIC_ROUTES: StaticSitemapRoute[] = [
   { path: "/", changeFrequency: "hourly", priority: 1 },
-  { path: "/listings", changeFrequency: "daily", priority: 0.95 },
-  { path: "/articles", changeFrequency: "daily", priority: 0.95 },
-  { path: "/classifieds", changeFrequency: "daily", priority: 0.88 },
-  { path: "/images", changeFrequency: "daily", priority: 0.88 },
-  { path: "/profile", changeFrequency: "daily", priority: 0.82 },
-  { path: "/sbm", changeFrequency: "daily", priority: 0.82 },
-  { path: "/pdf", changeFrequency: "daily", priority: 0.82 },
+  { path: "/search", changeFrequency: "daily", priority: 0.88 },
+  { path: "/about", changeFrequency: "monthly", priority: 0.65 },
+  { path: "/help", changeFrequency: "monthly", priority: 0.65 },
+  { path: "/contact", changeFrequency: "monthly", priority: 0.6 },
+  ...SITE_CONFIG.tasks
+    .filter((t) => t.enabled)
+    .map((t) => ({
+      path: t.route,
+      changeFrequency: "daily" as const,
+      priority: 0.95,
+    })),
 ];
 
 const getTaskFromPost = (post: SitePost) => {
@@ -105,6 +114,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const postRoutes: MetadataRoute.Sitemap = (feed?.posts || [])
     .map((post) => ({ post, task: getTaskFromPost(post) }))
     .filter(({ post, task }) => !shouldExcludePost(post, task))
+    .filter(({ task }) => {
+      const key = task.trim().toLowerCase();
+      return key && enabledTaskKeys.has(key);
+    })
     .map(({ post, task }) => {
       const route = taskRouteMap.get(task) || "/posts";
       const lastModified = getFreshestDate(post, now);
@@ -112,7 +125,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         url: `${BASE_URL}${route}/${post.slug}`,
         lastModified,
         changeFrequency: "hourly" as const,
-        priority: task === "listing" || task === "article" ? 0.9 : 0.82,
+        priority: task === "classified" || task === "listing" ? 0.9 : 0.82,
       };
     });
 

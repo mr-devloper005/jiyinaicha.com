@@ -55,9 +55,9 @@ export function NoArticlesFound() {
   return (
     <EmptyState
       icon={FileText}
-      title="No articles found"
-      description="We couldn't find any articles matching your criteria. Try adjusting your filters or search terms."
-      action={{ label: 'Browse All Articles', href: '/articles' }}
+      title="No posts found"
+      description="Nothing matched that search. Try different keywords or browse live classifieds."
+      action={{ label: 'Browse classifieds', href: '/classifieds' }}
     />
   )
 }

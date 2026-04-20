@@ -2,73 +2,75 @@ import type { TaskKey } from '@/lib/site-config'
 
 export const siteContent = {
   navbar: {
-    tagline: 'Classified platform',
+    tagline: 'Local classifieds',
   },
   footer: {
-    tagline: 'Classified platform',
+    tagline: 'Local classifieds marketplace',
   },
   hero: {
-    badge: 'Latest stories and visuals',
-    title: ['A thoughtful home for', 'stories, visuals, and discovery.'],
-    description: 'A Classified site for Jiyinaicha, built for clean discovery and structured publishing.',
+    badge: 'Today’s picks near you',
+    title: ['Sell what you no longer need,', 'and turn it into cash—fast.'],
+    description:
+      'Browse nearby deals, post in minutes, and keep everything in one calm marketplace layer built for scanning—not endless feeds.',
     primaryCta: {
       label: 'Browse classifieds',
       href: '/classifieds',
     },
     secondaryCta: {
-      label: 'Explore visuals',
-      href: '/images',
+      label: 'Post an ad',
+      href: '/dashboard/ads/new',
     },
-    searchPlaceholder: 'Search stories, visuals, listings, and more',
+    searchPlaceholder: 'Search to buy',
     focusLabel: 'Focus',
     featureCardBadge: 'latest cover rotation',
     featureCardTitle: 'Latest posts shape the visual identity of the homepage.',
     featureCardDescription:
-      'Recent images and stories stay at the center of the experience without changing any core platform behavior.',
+      'Recent listings stay at the center of the experience without changing any core platform behavior.',
   },
   home: {
     metadata: {
-      title: 'Stories, visuals, and discoverable content',
-      description: 'A Classified site for Jiyinaicha, built for clean discovery and structured publishing.',
-      openGraphTitle: 'Stories, visuals, and discoverable content',
+      title: 'Buy & sell locally on Jiyinaicha',
+      description:
+        'A focused classifieds marketplace for Jiyinaicha: post ads, browse categories, and discover local deals without noisy clutter.',
+      openGraphTitle: 'Buy & sell locally on Jiyinaicha',
       openGraphDescription:
-        'Discover articles, visual posts, and connected content through a calmer reading-first experience.',
-      keywords: ['story platform', 'article site', 'visual content', 'content discovery'],
+        'Search vehicles, homes, mobiles, and everyday items in a marketplace tuned for quick reads and honest listings.',
+      keywords: ['classifieds', 'local deals', 'buy and sell', 'marketplace', 'Jiyinaicha', 'used items'],
     },
-    introBadge: 'About the platform',
-    introTitle: 'Built for reading, browsing, and connecting different kinds of content.',
+    introBadge: 'Why this marketplace',
+    introTitle: 'One lane for local commerce—clear categories, honest listings, less noise.',
     introParagraphs: [
-      'This site brings together article-style reading, visual browsing, and structured discovery so visitors can move naturally between different content types.',
-      'Instead of separating stories, visuals, and supporting resources into disconnected surfaces, the platform keeps them connected in one place with consistent navigation and easier exploration.',
-      'Whether someone starts with a story, an image-led post, a listing, or a resource page, they can keep discovering related content without friction.',
+      'Jiyinaicha is built around classified ads first: shorter posts, stronger category cues, and a rhythm that rewards scanning.',
+      'Search stays global across the site, while the homepage keeps attention on what sells here most often.',
+      'Whether you are clearing space at home or hunting for a deal, the flow stays fast on mobile and desktop.',
     ],
     sideBadge: 'At a glance',
     sidePoints: [
-      'Reading-first homepage with stronger emphasis on stories and imagery.',
-      'Connected sections for articles, visuals, listings, and supporting resources.',
-      'Cleaner browsing rhythm designed to make exploration feel easier.',
-      'Lightweight interactions that keep the experience fast and readable.',
+      'Forest-and-mint visual system tuned for trust and contrast.',
+      'Hero search that sends people straight into results.',
+      'Cards and detail pages that highlight price cues and location context.',
+      'Light motion—CSS-first, no gimmicks.',
     ],
     primaryLink: {
-      label: 'Browse articles',
-      href: '/articles',
+      label: 'Open classifieds',
+      href: '/classifieds',
     },
     secondaryLink: {
-      label: 'See visuals',
-      href: '/images',
+      label: 'Search everything',
+      href: '/search',
     },
   },
   cta: {
-    badge: 'Start exploring',
-    title: 'Explore articles, visuals, and resources through one connected experience.',
-    description: 'A Classified site for Jiyinaicha, built for clean discovery and structured publishing.',
+    badge: 'Ready to list?',
+    title: 'Post once, reach buyers who are already browsing nearby categories.',
+    description: 'Keep the same posting workflow—this layer only changes how the story looks and feels.',
     primaryCta: {
       label: 'Browse classifieds',
       href: '/classifieds',
     },
     secondaryCta: {
-      label: 'Contact Sales',
-      href: '/contact',
+      label: 'Get help',
+      href: '/help',
     },
   },
   taskSectionHeading: 'Latest {label}',
@@ -78,31 +80,31 @@ export const siteContent = {
 export const taskPageMetadata: Record<Exclude<TaskKey, 'comment' | 'org' | 'social'>, { title: string; description: string }> = {
   article: {
     title: 'Articles and stories',
-    description: 'A Classified site for Jiyinaicha, built for clean discovery and structured publishing.',
+    description: 'Editorial reading on Jiyinaicha when enabled for this deployment.',
   },
   listing: {
-    title: 'Listings and discoverable pages',
-    description: 'A Classified site for Jiyinaicha, built for clean discovery and structured publishing.',
+    title: 'Business listings',
+    description: 'Structured listings when enabled for this deployment.',
   },
   classified: {
-    title: 'Classifieds and announcements',
-    description: 'A Classified site for Jiyinaicha, built for clean discovery and structured publishing.',
+    title: 'Classifieds & local deals',
+    description: 'Browse Jiyinaicha classifieds—vehicles, homes, mobiles, services, and more.',
   },
   image: {
-    title: 'Images and visual posts',
-    description: 'A Classified site for Jiyinaicha, built for clean discovery and structured publishing.',
+    title: 'Images and galleries',
+    description: 'Visual posts when enabled for this deployment.',
   },
   profile: {
-    title: 'Profiles and public pages',
-    description: 'A Classified site for Jiyinaicha, built for clean discovery and structured publishing.',
+    title: 'Profiles',
+    description: 'Public profiles when enabled for this deployment.',
   },
   sbm: {
-    title: 'Curated links and saved resources',
-    description: 'A Classified site for Jiyinaicha, built for clean discovery and structured publishing.',
+    title: 'Saved links',
+    description: 'Bookmark collections when enabled for this deployment.',
   },
   pdf: {
-    title: 'PDFs and downloadable resources',
-    description: 'A Classified site for Jiyinaicha, built for clean discovery and structured publishing.',
+    title: 'PDF library',
+    description: 'Downloadable resources when enabled for this deployment.',
   },
 }
 
@@ -118,9 +120,9 @@ export const taskIntroCopy: Record<
       'Browse by category to compare posts in context, discover related content, and move between formats without losing your place.',
     ],
     links: [
-      { label: 'Read articles', href: '/articles' },
-      { label: 'Explore classifieds', href: '/classifieds' },
-      { label: 'View profiles', href: '/profile' },
+      { label: 'Open classifieds', href: '/classifieds' },
+      { label: 'Site search', href: '/search' },
+      { label: 'Help center', href: '/help' },
     ],
   },
   article: {
@@ -131,22 +133,22 @@ export const taskIntroCopy: Record<
       'Use this section to browse thoughtful posts, revisit useful writing, and move into supporting content when you want more context.',
     ],
     links: [
-      { label: 'Explore listings', href: '/listings' },
-      { label: 'Open images', href: '/images' },
-      { label: 'Browse resources', href: '/pdf' },
+      { label: 'Browse classifieds', href: '/classifieds' },
+      { label: 'Open search', href: '/search' },
+      { label: 'Help', href: '/help' },
     ],
   },
   classified: {
-    title: 'Classifieds, offers, and timely updates',
+    title: 'Classifieds built for quick reads',
     paragraphs: [
-      'Classified posts help surface offers, notices, deals, and time-sensitive opportunities in a faster-scanning format.',
-      'They work well alongside articles, listings, and profiles, making it easier to connect short-term posts with more structured content.',
-      'Browse by category to find announcements quickly, then continue into related sections when you need more detail.',
+      'Post offers, jobs, services, and household items with categories that help buyers scan with confidence.',
+      'Search covers titles, summaries, and tags so the right ad surfaces without wading through unrelated tasks.',
+      'When you need more context, supporting pages stay one click away—without turning this into a generic content portal.',
     ],
     links: [
-      { label: 'Business listings', href: '/listings' },
-      { label: 'Read articles', href: '/articles' },
-      { label: 'View profiles', href: '/profile' },
+      { label: 'Search ads', href: '/search' },
+      { label: 'How it works', href: '/help' },
+      { label: 'Post an ad', href: '/dashboard/ads/new' },
     ],
   },
   image: {
@@ -157,9 +159,9 @@ export const taskIntroCopy: Record<
       'Browse the latest visual updates, then continue into related stories or supporting pages for more context.',
     ],
     links: [
-      { label: 'Read articles', href: '/articles' },
-      { label: 'Explore listings', href: '/listings' },
-      { label: 'Open classifieds', href: '/classifieds' },
+      { label: 'Classifieds home', href: '/classifieds' },
+      { label: 'Search', href: '/search' },
+      { label: 'About', href: '/about' },
     ],
   },
   profile: {
@@ -170,9 +172,9 @@ export const taskIntroCopy: Record<
       'Browse profiles to understand people and brands more clearly, then continue into related content from the same source.',
     ],
     links: [
-      { label: 'Open listings', href: '/listings' },
-      { label: 'Read articles', href: '/articles' },
-      { label: 'Browse images', href: '/images' },
+      { label: 'Classifieds', href: '/classifieds' },
+      { label: 'Search', href: '/search' },
+      { label: 'Help', href: '/help' },
     ],
   },
   sbm: {
@@ -183,9 +185,9 @@ export const taskIntroCopy: Record<
       'Use this section to organize helpful sources and discover connected content without leaving the broader site experience.',
     ],
     links: [
-      { label: 'Browse articles', href: '/articles' },
-      { label: 'Explore listings', href: '/listings' },
-      { label: 'Open PDFs', href: '/pdf' },
+      { label: 'Classifieds', href: '/classifieds' },
+      { label: 'Search', href: '/search' },
+      { label: 'Help', href: '/help' },
     ],
   },
   pdf: {
@@ -196,9 +198,9 @@ export const taskIntroCopy: Record<
       'Browse by category to find relevant files quickly, then continue into related sections when you want more context.',
     ],
     links: [
-      { label: 'Read articles', href: '/articles' },
-      { label: 'See listings', href: '/listings' },
-      { label: 'Explore profiles', href: '/profile' },
+      { label: 'Classifieds', href: '/classifieds' },
+      { label: 'Search', href: '/search' },
+      { label: 'Help', href: '/help' },
     ],
   },
   social: {
@@ -209,9 +211,9 @@ export const taskIntroCopy: Record<
       'Use these posts as lightweight entry points into the broader site experience.',
     ],
     links: [
-      { label: 'Open listings', href: '/listings' },
-      { label: 'Read articles', href: '/articles' },
-      { label: 'View PDFs', href: '/pdf' },
+      { label: 'Classifieds', href: '/classifieds' },
+      { label: 'Search', href: '/search' },
+      { label: 'Help', href: '/help' },
     ],
   },
   comment: {
@@ -222,9 +224,9 @@ export const taskIntroCopy: Record<
       'Use comments as supporting context beneath stories, then continue exploring related content from the same topic area.',
     ],
     links: [
-      { label: 'Explore articles', href: '/articles' },
-      { label: 'View listings', href: '/listings' },
-      { label: 'See classifieds', href: '/classifieds' },
+      { label: 'Classifieds', href: '/classifieds' },
+      { label: 'Search', href: '/search' },
+      { label: 'Help', href: '/help' },
     ],
   },
   org: {
@@ -235,9 +237,9 @@ export const taskIntroCopy: Record<
       'Connect organization pages with related content to build a clearer and more unified site presence.',
     ],
     links: [
-      { label: 'Business listings', href: '/listings' },
-      { label: 'Read articles', href: '/articles' },
-      { label: 'PDF library', href: '/pdf' },
+      { label: 'Classifieds', href: '/classifieds' },
+      { label: 'Search', href: '/search' },
+      { label: 'Help', href: '/help' },
     ],
   },
 }

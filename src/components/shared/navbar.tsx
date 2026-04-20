@@ -66,24 +66,27 @@ const variantClasses = {
   },
 } as const
 
+/** Classified marketplace shell — deep forest bar + mint primary CTA */
 const directoryPalette = {
   'directory-clean': {
-    shell: 'border-b border-slate-200 bg-white/94 text-slate-950 shadow-[0_1px_0_rgba(15,23,42,0.04)] backdrop-blur-xl',
-    logo: 'rounded-2xl border border-slate-200 bg-slate-50',
-    nav: 'text-slate-600 hover:text-slate-950',
-    search: 'border border-slate-200 bg-slate-50 text-slate-600',
-    cta: 'bg-slate-950 text-white hover:bg-slate-800',
-    post: 'border border-slate-200 bg-white text-slate-950 hover:bg-slate-50',
-    mobile: 'border-t border-slate-200 bg-white',
+    shell: 'border-b border-emerald-900/30 bg-[#0f2419]/95 text-white shadow-[0_12px_40px_rgba(5,24,18,0.35)] backdrop-blur-xl',
+    logo: 'rounded-full border border-white/15 bg-white/[0.07] shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]',
+    nav: 'text-emerald-100/85 hover:text-white',
+    search: 'cursor-pointer border border-white/12 bg-white/8 text-emerald-100/90 transition hover:bg-white/12',
+    cta: 'border border-white/25 bg-transparent text-white hover:bg-white/10',
+    post: 'bg-[#5ee9b5] text-[#052018] shadow-[0_8px_30px_rgba(94,233,181,0.25)] hover:bg-[#4bd9a5]',
+    navItem: 'border border-white/10 bg-white/5 text-emerald-50 hover:bg-white/10',
+    mobile: 'border-t border-emerald-900/40 bg-[#0c1f17]',
   },
   'market-utility': {
-    shell: 'border-b border-[#d7deca] bg-[#f4f6ef]/96 text-[#1f2617] shadow-[0_1px_0_rgba(64,76,34,0.06)] backdrop-blur-xl',
-    logo: 'rounded-xl border border-[#d7deca] bg-white',
-    nav: 'text-[#56604b] hover:text-[#1f2617]',
-    search: 'border border-[#d7deca] bg-white text-[#56604b]',
-    cta: 'bg-[#1f2617] text-[#edf5dc] hover:bg-[#2f3a24]',
-    post: 'border border-[#d7deca] bg-white text-[#1f2617] hover:bg-[#eef2e4]',
-    mobile: 'border-t border-[#d7deca] bg-[#f4f6ef]',
+    shell: 'border-b border-emerald-900/30 bg-[#0f2419]/95 text-white shadow-[0_12px_40px_rgba(5,24,18,0.35)] backdrop-blur-xl',
+    logo: 'rounded-full border border-white/15 bg-white/[0.07] shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]',
+    nav: 'text-emerald-100/85 hover:text-white',
+    search: 'cursor-pointer border border-white/12 bg-white/8 text-emerald-100/90 transition hover:bg-white/12',
+    cta: 'border border-white/25 bg-transparent text-white hover:bg-white/10',
+    post: 'bg-[#5ee9b5] text-[#052018] shadow-[0_8px_30px_rgba(94,233,181,0.25)] hover:bg-[#4bd9a5]',
+    navItem: 'border border-white/10 bg-white/5 text-emerald-50 hover:bg-white/10',
+    mobile: 'border-t border-emerald-900/40 bg-[#0c1f17]',
   },
 } as const
 
@@ -115,20 +118,32 @@ export function Navbar() {
         <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
           <div className="flex min-w-0 items-center gap-4">
             <Link href="/" className="flex shrink-0 items-center gap-3">
-              <div className={cn('flex h-12 w-12 items-center justify-center overflow-hidden p-1.5', palette.logo)}>
-                <img src="/favicon.png?v=20260401" alt={`${SITE_CONFIG.name} logo`} width="48" height="48" className="h-full w-full object-contain" />
+              <div className={cn('relative h-12 w-12 shrink-0 overflow-hidden', palette.logo)}>
+                <img
+                  src="/favicon.png?v=20260420"
+                  alt={`${SITE_CONFIG.name} logo`}
+                  width={64}
+                  height={64}
+                  className="absolute left-1/2 top-1/2 h-[132%] w-[132%] max-w-none -translate-x-1/2 -translate-y-1/2 object-contain"
+                />
               </div>
               <div className="min-w-0 hidden sm:block">
-                <span className="block truncate text-xl font-semibold">{SITE_CONFIG.name}</span>
-                <span className="block text-[10px] uppercase tracking-[0.24em] opacity-60">{siteContent.navbar.tagline}</span>
+                <span className="block truncate text-xl font-semibold tracking-tight lowercase">{SITE_CONFIG.name}.</span>
+                <span className="block text-[10px] uppercase tracking-[0.24em] text-emerald-200/55">{siteContent.navbar.tagline}</span>
               </div>
             </Link>
 
-            <div className="hidden items-center gap-5 xl:flex">
-              {primaryNavigation.slice(0, 4).map((task) => {
+            <div className="hidden items-center gap-6 xl:flex">
+              <Link href="/classifieds" className={cn('text-sm font-semibold transition-colors', pathname.startsWith('/classifieds') ? 'text-white' : palette.nav)}>
+                Explore
+              </Link>
+              <Link href="/search" className={cn('text-sm font-semibold transition-colors', pathname.startsWith('/search') ? 'text-white' : palette.nav)}>
+                Today&apos;s deals
+              </Link>
+              {primaryNavigation.slice(0, 3).map((task) => {
                 const isActive = pathname.startsWith(task.route)
                 return (
-                  <Link key={task.key} href={task.route} className={cn('text-sm font-semibold transition-colors', isActive ? 'text-foreground' : palette.nav)}>
+                  <Link key={task.key} href={task.route} className={cn('text-sm font-semibold transition-colors', isActive ? 'text-white' : palette.nav)}>
                     {task.label}
                   </Link>
                 )
@@ -137,36 +152,32 @@ export function Navbar() {
           </div>
 
           <div className="hidden min-w-0 flex-1 items-center justify-center lg:flex">
-            <div className={cn('flex w-full max-w-xl items-center gap-3 rounded-full px-4 py-3', palette.search)}>
-              <Search className="h-4 w-4" />
-              <span className="text-sm">Find businesses, spaces, and local services</span>
-              <div className="ml-auto hidden items-center gap-1 text-xs opacity-75 md:flex">
+            <Link href="/search" className={cn('flex w-full max-w-xl items-center gap-3 rounded-full px-4 py-3', palette.search)}>
+              <Search className="h-4 w-4 shrink-0 opacity-80" />
+              <span className="text-sm">Search ads, keywords, towns</span>
+              <div className="ml-auto hidden items-center gap-1 text-xs text-emerald-100/70 md:flex">
                 <MapPin className="h-3.5 w-3.5" />
-                Local discovery
+                Local
               </div>
-            </div>
+            </Link>
           </div>
 
           <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-            {primaryTask ? (
-              <Link href={primaryTask.route} className="hidden items-center gap-2 rounded-full border border-current/10 px-3 py-2 text-xs font-semibold uppercase tracking-[0.18em] opacity-75 md:inline-flex">
-                <Sparkles className="h-3.5 w-3.5" />
-                {primaryTask.label}
-              </Link>
-            ) : null}
-
             {isAuthenticated ? (
               <NavbarAuthControls />
             ) : (
               <div className="hidden items-center gap-2 md:flex">
-                <Button variant="ghost" size="sm" asChild className="rounded-full px-4">
-                  <Link href="/login">Sign In</Link>
+                <Button variant="ghost" size="sm" asChild className="rounded-full border border-white/15 bg-transparent px-4 text-white hover:bg-white/10 hover:text-white">
+                  <Link href="/register">Get Started</Link>
                 </Button>
-                <Button size="sm" asChild className={cn('rounded-full', palette.cta)}>
-                  <Link href="/register">
+                <Button size="sm" asChild className={cn('rounded-full font-semibold', palette.post)}>
+                  <Link href="/dashboard/ads/new">
                     <Plus className="mr-1 h-4 w-4" />
-                    Add Listing
+                    Post Ad
                   </Link>
+                </Button>
+                <Button variant="ghost" size="sm" asChild className="rounded-full px-3 text-emerald-100/90 hover:bg-white/10 hover:text-white">
+                  <Link href="/login">Sign in</Link>
                 </Button>
               </div>
             )}
@@ -180,14 +191,14 @@ export function Navbar() {
         {isMobileMenuOpen && (
           <div className={palette.mobile}>
             <div className="space-y-2 px-4 py-4">
-              <div className={cn('mb-3 flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium', palette.search)}>
+              <Link href="/search" onClick={() => setIsMobileMenuOpen(false)} className={cn('mb-3 flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium', palette.search)}>
                 <Search className="h-4 w-4" />
-                Find businesses, spaces, and services
-              </div>
+                Search classifieds
+              </Link>
               {mobileNavigation.map((item) => {
                 const isActive = pathname.startsWith(item.href)
                 return (
-                  <Link key={item.name} href={item.href} onClick={() => setIsMobileMenuOpen(false)} className={cn('flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition-colors', isActive ? 'bg-foreground text-background' : palette.post)}>
+                  <Link key={item.name} href={item.href} onClick={() => setIsMobileMenuOpen(false)} className={cn('flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition-colors', isActive ? 'bg-[#5ee9b5] text-[#052018]' : palette.navItem)}>
                     <item.icon className="h-5 w-5" />
                     {item.name}
                   </Link>
@@ -210,8 +221,14 @@ export function Navbar() {
       <nav className={cn('mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8', isFloating ? 'h-24 pt-4' : 'h-20')}>
         <div className="flex min-w-0 flex-1 items-center gap-4 lg:gap-7">
           <Link href="/" className="flex shrink-0 items-center gap-3 whitespace-nowrap pr-2">
-            <div className={cn('flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden p-1.5', style.logo)}>
-              <img src="/favicon.png?v=20260401" alt={`${SITE_CONFIG.name} logo`} width="48" height="48" className="h-full w-full object-contain" />
+            <div className={cn('relative h-12 w-12 shrink-0 overflow-hidden p-0', style.logo)}>
+              <img
+                src="/favicon.png?v=20260420"
+                alt={`${SITE_CONFIG.name} logo`}
+                width={64}
+                height={64}
+                className="absolute left-1/2 top-1/2 h-[132%] w-[132%] max-w-none -translate-x-1/2 -translate-y-1/2 object-contain"
+              />
             </div>
             <div className="min-w-0 hidden sm:block">
               <span className="block truncate text-xl font-semibold">{SITE_CONFIG.name}</span>
