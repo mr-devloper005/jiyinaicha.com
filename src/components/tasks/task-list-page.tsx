@@ -226,17 +226,34 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
                 </Link>
               </div>
             </div>
-            <div className="grid gap-3 sm:grid-cols-3">
-              {[
-                { t: 'Price-forward cards', d: 'Titles and summaries stay compact for thumb scrolling.' },
-                { t: 'Location cues', d: 'Addresses and regions read before the fold when present.' },
-                { t: 'Fresh sort', d: 'Latest posts float up without changing feed logic.' },
-              ].map((item) => (
-                <div key={item.t} className={`rounded-[1.5rem] p-5 ${ui.soft}`}>
-                  <p className="text-sm font-semibold text-[#0c1a14]">{item.t}</p>
-                  <p className={`mt-2 text-sm leading-6 ${ui.muted}`}>{item.d}</p>
-                </div>
-              ))}
+            <div className={`rounded-[2rem] p-8 ${ui.panel}`}>
+              <p className={`text-xs font-semibold uppercase tracking-[0.28em] ${ui.muted}`}>Filter by category</p>
+              <form className="mt-4 flex flex-col gap-3" action={taskConfig?.route || '#'}>
+                <select name="category" defaultValue={normalizedCategory} className={`h-12 w-full rounded-xl px-3 text-sm ${ui.input}`}>
+                  <option value="all">All categories</option>
+                  {CATEGORY_OPTIONS.map((item) => (
+                    <option key={item.slug} value={item.slug}>{item.name}</option>
+                  ))}
+                </select>
+                <button type="submit" className={`h-12 w-full rounded-xl text-sm font-semibold ${ui.button}`}>
+                  Apply filter
+                </button>
+              </form>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {CATEGORY_OPTIONS.slice(0, 5).map((item) => (
+                  <Link
+                    key={item.slug}
+                    href={`${taskConfig?.route || '/classifieds'}?category=${item.slug}`}
+                    className={`inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium transition ${
+                      normalizedCategory === item.slug
+                        ? 'bg-[#134d3a] text-white'
+                        : 'bg-[#f4faf7] text-[#3d5248] hover:bg-[#cfe5d6]'
+                    }`}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+              </div>
             </div>
           </section>
         ) : null}
