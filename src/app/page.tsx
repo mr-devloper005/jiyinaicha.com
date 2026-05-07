@@ -28,7 +28,7 @@ import { SchemaJsonLd } from '@/components/seo/schema-jsonld'
 import { TaskPostCard } from '@/components/shared/task-post-card'
 import { SITE_CONFIG, type TaskKey } from '@/lib/site-config'
 import { buildPageMetadata } from '@/lib/seo'
-import { fetchTaskPosts } from '@/lib/task-data'
+import { fetchTaskPosts, getPostImages, getPostTaskKey } from '@/lib/task-data'
 import { siteContent } from '@/config/site.content'
 import { getFactoryState } from '@/design/factory/get-factory-state'
 import { getProductKind, type ProductKind } from '@/design/factory/get-product-kind'
@@ -59,6 +59,10 @@ const taskIcons: Record<TaskKey, any> = {
   classified: Tag,
   image: ImageIcon,
   profile: User,
+  social: LayoutGrid,
+  pdf: FileText,
+  org: Building2,
+  comment: FileText,
 }
 
 function resolveTaskKey(value: unknown, fallback: TaskKey): TaskKey {
@@ -161,12 +165,6 @@ const QUICK_BROWSE = [
   { label: 'Bikes', slug: 'game-sports', Icon: Bike },
 ] as const
 
-const POPULAR_CATEGORIES = [
-  { name: 'Vehicles', slug: 'automotive', ads: '1.2k', src: 'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=900&q=80' },
-  { name: 'Mobiles', slug: 'technology', ads: '980', src: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=900&q=80' },
-  { name: 'Homes', slug: 'real-estate', ads: '640', src: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=900&q=80' },
-  { name: 'Furniture', slug: 'furniture', ads: '420', src: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=900&q=80' },
-] as const
 
 function DirectoryHome({ enabledTasks, listingPosts, classifiedPosts, profilePosts }: {
   enabledTasks: EnabledTask[]
@@ -177,6 +175,47 @@ function DirectoryHome({ enabledTasks, listingPosts, classifiedPosts, profilePos
   const tone = getClassifiedMarketTone()
   const featuredListings = (classifiedPosts.length ? classifiedPosts : listingPosts).slice(0, 3)
   const featuredTaskKey: TaskKey = classifiedPosts.length ? 'classified' : 'listing'
+
+  // Generate real category data from posts
+  const allPosts = [...classifiedPosts, ...listingPosts]
+  const categoryCounts = new Map<string, number>()
+  const categoryImages = new Map<string, string>()
+
+  for (const post of allPosts) {
+    const content = post.content && typeof post.content === 'object' ? post.content : {}
+    const category = typeof (content as any).category === 'string' ? (content as any).category : ''
+    
+    if (category) {
+      categoryCounts.set(category, (categoryCounts.get(category) || 0) + 1)
+      
+      // Get first image for this category if not already set
+      if (!categoryImages.has(category)) {
+        const images = getPostImages(post)
+        if (images.length > 0) {
+          categoryImages.set(category, images[0])
+        }
+      }
+    }
+  }
+
+  // Map category slugs to display names
+  const categoryNames: Record<string, string> = {
+    'automotive': 'Vehicles',
+    'real-estate': 'Real Estate',
+    'technology': 'Mobiles & Tech',
+    'home-improvement': 'Home & Garden',
+    'furniture': 'Furniture',
+    'electric': 'Electronics',
+    'game-sports': 'Sports & Hobbies',
+  }
+
+  // Build popular categories with real data (show even with 0 posts)
+  const popularCategories = Object.keys(categoryNames).map(slug => ({
+    name: categoryNames[slug] || slug,
+    slug,
+    ads: categoryCounts.get(slug) || 0,
+    src: categoryImages.get(slug) || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=900&q=80'
+  })).slice(0, 4)
   const quickRoutes = enabledTasks.slice(0, 4)
   const freshGrid = (profilePosts.length ? profilePosts : classifiedPosts).slice(0, 4)
 
@@ -263,7 +302,7 @@ function DirectoryHome({ enabledTasks, listingPosts, classifiedPosts, profilePos
             </Link>
           </div>
           <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {POPULAR_CATEGORIES.map((cat) => (
+            {popularCategories.map((cat) => (
               <Link
                 key={cat.slug}
                 href={`/classifieds?category=${cat.slug}`}
@@ -321,7 +360,7 @@ function DirectoryHome({ enabledTasks, listingPosts, classifiedPosts, profilePos
           <div className="grid gap-4 md:grid-cols-2">
             {freshGrid.map((post) => {
               const meta = getPostMeta(post)
-              const taskKey = resolveTaskKey(post.task, 'classified')
+              const taskKey = resolveTaskKey(getPostTaskKey(post) || 'classified', 'classified')
               return (
                 <Link key={post.id} href={getTaskHref(taskKey, post.slug)} className={`overflow-hidden rounded-[1.85rem] ${tone.panel} transition hover:-translate-y-0.5 hover:shadow-[0_22px_55px_rgba(8,40,28,0.12)]`}>
                   <div className="relative h-44 overflow-hidden">
@@ -485,7 +524,7 @@ function VisualHome({ primaryTask, imagePosts, profilePosts, articlePosts }: { p
             {gallery.slice(0, 5).map((post, index) => (
               <Link
                 key={post.id}
-                href={getTaskHref(resolveTaskKey(post.task, 'image'), post.slug)}
+                href={getTaskHref(resolveTaskKey(getPostTaskKey(post) || 'image', 'image'), post.slug)}
                 className={index === 0 ? `col-span-2 row-span-2 overflow-hidden rounded-[2.4rem] ${tone.panel}` : `overflow-hidden rounded-[1.8rem] ${tone.soft}`}
               >
                 <div className={index === 0 ? 'relative h-[360px]' : 'relative h-[170px]'}>
@@ -550,7 +589,7 @@ function CurationHome({ primaryTask, bookmarkPosts, profilePosts, articlePosts }
 
           <div className="grid gap-4 md:grid-cols-2">
             {collections.map((post) => (
-              <Link key={post.id} href={getTaskHref(resolveTaskKey(post.task, 'sbm'), post.slug)} className={`rounded-[1.8rem] p-6 ${tone.panel}`}>
+              <Link key={post.id} href={getTaskHref(resolveTaskKey(getPostTaskKey(post) || 'sbm', 'sbm'), post.slug)} className={`rounded-[1.8rem] p-6 ${tone.panel}`}>
                 <p className="text-xs font-semibold uppercase tracking-[0.24em] opacity-70">Collection</p>
                 <h3 className="mt-3 text-2xl font-semibold">{post.title}</h3>
                 <p className={`mt-3 text-sm leading-8 ${tone.muted}`}>{post.summary || 'A calmer bookmark surface with room for context and grouping.'}</p>

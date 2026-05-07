@@ -106,17 +106,6 @@ export function Footer() {
                   </Link>
                 </div>
               </div>
-
-              <div className="w-full border-t border-white/10 pt-6 lg:text-right">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-emerald-200/40">More platform sections</p>
-                <nav className="mt-3 flex flex-wrap justify-start gap-x-4 gap-y-2 text-sm lg:justify-end" aria-label="Additional content types">
-                  {secondaryTaskLinks.map((task) => (
-                    <Link key={task.key} href={task.route} className="text-emerald-200/75 underline-offset-4 transition hover:text-[#5ee9b5] hover:underline">
-                      {task.label}
-                    </Link>
-                  ))}
-                </nav>
-              </div>
             </div>
           </div>
         </div>
