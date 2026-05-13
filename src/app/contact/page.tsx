@@ -7,14 +7,8 @@ import { getFactoryState } from '@/design/factory/get-factory-state'
 import { getProductKind } from '@/design/factory/get-product-kind'
 import { CONTACT_PAGE_OVERRIDE_ENABLED, ContactPageOverride } from '@/overrides/contact-page'
 
-const getContactEmails = () => {
-  const raw = (process.env.NEXT_PUBLIC_CONTACT_EMAILS || process.env.NEXT_PUBLIC_CONTACT_EMAIL || '').trim()
-  if (!raw) return []
-  return raw
-    .split(/[,\n;]/g)
-    .map((item) => item.trim())
-    .filter(Boolean)
-}
+const HERO_PHOTO =
+  'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=2000&q=80'
 
 const getContactPhone = () => {
   return process.env.NEXT_PUBLIC_CONTACT_PHONE?.trim() || ''
@@ -23,9 +17,6 @@ const getContactPhone = () => {
 const getContactAddress = () => {
   return process.env.NEXT_PUBLIC_CONTACT_ADDRESS?.trim() || ''
 }
-
-const HERO_PHOTO =
-  'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=2000&q=80'
 
 function getClassifiedMarketTone() {
   return {
@@ -49,12 +40,8 @@ export default function ContactPage() {
   }
 
   const tone = getClassifiedMarketTone()
-  const contactEmails = getContactEmails()
   const contactPhone = getContactPhone()
   const contactAddress = getContactAddress()
-  
-  // Fallback email if none configured
-  const displayEmails = contactEmails.length ? contactEmails : ['contact@jiyinaicha.com']
 
   return (
     <div className="min-h-screen">
@@ -86,25 +73,9 @@ export default function ContactPage() {
                 <div className={`rounded-[2rem] p-8 ${tone.panel}`}>
                   <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#3d5248]">Contact Information</p>
                   <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-[#0c1a14]">Reach us directly</h2>
-                  
-                  <div className={`mt-6 rounded-[1.6rem] p-5 ${tone.soft}`}>
-                      <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#3d5248]">Email</p>
-                      <div className="mt-3 grid gap-3">
-                        {displayEmails.map((email) => (
-                          <a
-                            key={email}
-                            href={`mailto:${email}`}
-                            className={`inline-flex h-12 items-center justify-center gap-2 rounded-full px-6 text-sm font-semibold ${tone.action}`}
-                          >
-                            <Mail className="h-4 w-4" />
-                            {email}
-                          </a>
-                        ))}
-                      </div>
-                    </div>
 
                   {contactPhone ? (
-                    <div className={`mt-4 rounded-[1.6rem] p-5 ${tone.soft}`}>
+                    <div className={`mt-6 rounded-[1.6rem] p-5 ${tone.soft}`}>
                       <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#3d5248]">Phone</p>
                       <a
                         href={`tel:${contactPhone}`}
