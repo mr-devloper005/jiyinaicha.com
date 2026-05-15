@@ -36,9 +36,6 @@ const footerLinks = {
     { name: 'Status', href: '/status' },
   ],
   legal: [
-    { name: 'Privacy', href: '/privacy' },
-    { name: 'Terms', href: '/terms' },
-    { name: 'Cookies', href: '/cookies' },
     { name: 'Licenses', href: '/licenses' },
   ],
 }
@@ -112,17 +109,6 @@ export function Footer() {
         <div className="border-t border-white/8">
           <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-4 text-xs text-emerald-200/45 sm:flex-row sm:px-6 lg:px-8">
             <p>&copy; {new Date().getFullYear()} {SITE_CONFIG.name}. All rights reserved.</p>
-            <div className="flex flex-wrap justify-center gap-x-4 gap-y-1">
-              <Link href="/privacy" className="hover:text-emerald-200/80">
-                Privacy
-              </Link>
-              <Link href="/terms" className="hover:text-emerald-200/80">
-                Terms
-              </Link>
-              <Link href="/cookies" className="hover:text-emerald-200/80">
-                Cookies
-              </Link>
-            </div>
           </div>
         </div>
       </footer>

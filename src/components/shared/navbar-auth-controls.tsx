@@ -9,7 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { useAuth } from '@/lib/auth-context'
 
 export function NavbarAuthControls() {
@@ -25,7 +25,6 @@ export function NavbarAuthControls() {
           aria-label="Account menu"
         >
           <Avatar className="h-9 w-9 border border-[#5ee9b5]/35">
-            <AvatarImage src={user?.avatar} alt={user?.name} />
             <AvatarFallback className="bg-[#134d3a] text-sm font-semibold text-[#5ee9b5]">
               {user?.name?.charAt(0)}
             </AvatarFallback>
@@ -35,7 +34,6 @@ export function NavbarAuthControls() {
       <DropdownMenuContent align="end" className="w-56 border-[#cfe5d6] bg-white/98">
         <div className="flex items-center gap-3 p-3">
           <Avatar className="h-10 w-10 border border-[#cfe5d6]">
-            <AvatarImage src={user?.avatar} alt={user?.name} />
             <AvatarFallback className="bg-[#e8f5ef] text-sm font-semibold text-[#134d3a]">
               {user?.name?.charAt(0)}
             </AvatarFallback>

@@ -11,7 +11,6 @@ import {
   Home,
   Image as ImageIcon,
   LayoutGrid,
-  MapPin,
   Plus,
   Search,
   ShieldCheck,
@@ -255,20 +254,6 @@ function DirectoryHome({ enabledTasks, listingPosts, classifiedPosts, profilePos
               placeholder={siteContent.hero.searchPlaceholder}
               className="min-h-12 flex-1 rounded-full border-0 bg-transparent px-5 text-sm text-[#0c1a14] outline-none placeholder:text-[#5a6f65]"
             />
-            <div className="flex items-center gap-2 border-t border-[#dfece5] px-3 py-2 sm:border-l sm:border-t-0 sm:py-0">
-              <MapPin className="h-4 w-4 shrink-0 text-[#2d4a3c]" aria-hidden />
-              <select
-                name="category"
-                className="w-full min-w-[8rem] cursor-pointer bg-transparent text-sm font-medium text-[#1a2e24] outline-none"
-                defaultValue=""
-                aria-label="Area or category"
-              >
-                <option value="">Bangladesh</option>
-                <option value="automotive">Vehicles</option>
-                <option value="real-estate">Real estate</option>
-                <option value="technology">Mobiles & tech</option>
-              </select>
-            </div>
             <button
               type="submit"
               className="inline-flex min-h-12 min-w-12 shrink-0 items-center justify-center rounded-full bg-[#134d3a] text-white transition hover:bg-[#0f3d2e] sm:min-w-[3.25rem]"
